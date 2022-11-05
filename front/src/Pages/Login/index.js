@@ -28,15 +28,13 @@ function Login() {
       
                 localStorage.setItem('auth_token', res.data.token);
                 localStorage.setItem('auth_nome', res.data.username);
-                alert("Usuário Autenticado com Sucesso")
+                alert("Login com Sucesso")
                 history.push('/');
       
               } else if(res.data.status === 401) {
                 alert("Credenciais Invalidas",res.data.message,"warning");
                 
-              } else{
-                setError({...error, error_list: res.data.validation_errors  }); 
-              }
+              } 
               
             });
           });

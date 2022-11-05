@@ -13,7 +13,7 @@ function Home(){
 
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('auth_name');
-                alert("Sucesso", res.data.message, "Sucesso");
+                alert("Usuario saiu com Sucesso", res.data.message, "Sucesso");
                 history.push('/login');
 
             } 

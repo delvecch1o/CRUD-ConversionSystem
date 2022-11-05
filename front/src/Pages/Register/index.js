@@ -14,16 +14,14 @@ const [error, setError] = useState();
 
 const submitRegister = (e) => {
     e.preventDefault();
-    if (!email | !emailConfirme | !senha) {
+        if (!email | !emailConfirme | !senha) {
         setError("Preencha todos os campos");
         return;
-    } else if(email !== emailConfirme ){
+        } else if(email !== emailConfirme ){
         setError("Os e-mails não são iguais");
         return; 
-    } else if(senha < 8 ){
-        setError("senha muito curta");
-        return;
-    }
+        } 
+        
 
     const data ={
         name: nome,
@@ -37,7 +35,7 @@ const submitRegister = (e) => {
   
             localStorage.setItem('auth_token', res.data.token);
             localStorage.setItem('auth_nome', res.data.username);
-            alert("Usuário cadastrado com sucesso")
+            alert("Usuario Cadastrado Com Sucesso!")
             history.push('/');
   
           } else {
@@ -76,7 +74,7 @@ const submitRegister = (e) => {
 
                     <Input
                     type='password'
-                    placeholder='Digite sua senha,minimo 8 caracteres'
+                    placeholder='Digite sua senha,minimo 8'
                     value={senha}
                     onChange={(e) => [setSenha(e.target.value), setError("")]}
                 />
