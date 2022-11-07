@@ -6,6 +6,7 @@ import RoutesPrivate from './privateRoutes';
 import Register from '../Pages/Register';
 import Login from '../Pages/Login';
 import Home from '../Pages/Home'
+import Temperature from '../Pages/TemperatureConverter';
 
 
 
@@ -28,6 +29,7 @@ return (
             <Switch>
 
                 <RoutesPrivate exact path="/" render={Home} />
+                <RoutesPrivate exact path="/temperature" render={Temperature} />
                 
                 <Route path="/login">{localStorage.getItem('auth_token') ? <Redirect to='/' /> : <Login />}</Route>
                 <Route path="/register">{localStorage.getItem('auth_token') ? <Redirect to='/' /> : <Register />}</Route>

@@ -7,6 +7,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 10px;
   height: 100vh;
+  background-color: #2f2f2e;
 `
 export const Form = styled.form`
   gap: 15px;
@@ -16,7 +17,7 @@ export const Form = styled.form`
   flex-direction: column;
   width: 100%;
   box-shadow: 0 1px 2px #0003;
-  background-color: white;
+  background-color: #17181b;
   max-width: 350px;
   padding: 20px;
   border-radius: 5px;
@@ -52,17 +53,20 @@ export const Button = styled.button`
   border-radius: 5px;
   width: 100%;
   cursor: pointer;
-  background-color: #046ee5;
+  background-color: #334899;
   color: white;
   font-weight: 600;
   font-size: 16px;
   max-width: 350px;
+  &:hover {
+    background-color: black;
+  }
 `
-
 export const Strong = styled.strong`
   cursor: pointer;
   a {
     text-decoration: none;
-    color: #676767;
+    color: #c1c9ff;
   }
+  
 `
