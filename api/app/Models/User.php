@@ -46,4 +46,8 @@ class User extends Authenticatable
     public function temperature(){
         return $this->hasMany(Temperature::class);
     }
+
+    public function coin(){
+        return $this->hasMany(Coin::class);
+    }
 }
