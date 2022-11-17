@@ -15,6 +15,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('temperature', [TemperatureController::class, 'temperature']);
     Route::post('coin', [CoinController::class, 'coin']);
     
+    Route::get('temperature/show', [TemperatureController::class, 'show']);
+    
+    Route::put('temperature/update/{id}', [TemperatureController::class, 'update']);
+    
+    Route::delete('temperature/{id}', [TemperatureController::class, 'destroy']);
+    
 });
 
 /*
