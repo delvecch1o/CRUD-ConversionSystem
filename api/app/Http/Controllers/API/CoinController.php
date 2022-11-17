@@ -46,5 +46,56 @@ class CoinController extends Controller
         return response()->json(["result"=> $result]);
 
     }
-    
+
+    public function show(){
+        $user = Auth::user();
+        $historicCoin = $user->coin()->get();
+
+        return response()->json([
+            'historicCoin'=>$historicCoin,
+        ]);
+    }
+
+    public function update(Request $request, $id){
+
+        $validator = Validator::make($request->all(), [
+            'submitIn'=>'required|integer',
+            'submitFrom'=>'required|string|in:usd,eur,brl|different:submitTo',
+            'submitTo'=>'required|string|in:usd,eur,brl'
+        ]);
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'=>400,
+                'errors'=>$validator->messages()
+            ]);
+        }
+
+        $in = $request->input('submitIn');
+        $from = $request->input('submitFrom');
+        $to = $request->input('submitTo');
+        
+        $httpClient = new HttpClient([ 'verify' => false ]);
+        $data = json_decode($httpClient->get("https://economia.awesomeapi.com.br/${from}-${to}")
+        ->getBody()->getContents());
+        $result = $data[0]->bid * $in;
+
+        $user = Auth::user();
+        $user->coin()->where('id', $id)->update([
+            'in'=>$in,
+            'from'=>$from,
+            'to'=>$to,
+            'result'=>$result,
+        ]);
+        return response()->json(["result"=> $result]);
+
+    }
+
+    public function destroy($id){
+        Coin::findOrFail($id)->delete();
+        return response()->json([
+            "message"=>"Excluido com sucesso"
+        ]);
+    }
+
 }
