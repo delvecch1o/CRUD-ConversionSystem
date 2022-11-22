@@ -43,11 +43,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function temperature(){
+    public function temperature()
+    {
         return $this->hasMany(Temperature::class);
     }
 
-    public function coin(){
+    public function coin()
+    {
         return $this->hasMany(Coin::class);
     }
 }

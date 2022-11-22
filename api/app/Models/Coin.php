@@ -15,7 +15,8 @@ class Coin extends Model
         'to',
         'result',
     ];
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

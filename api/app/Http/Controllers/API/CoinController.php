@@ -4,98 +4,99 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Client as HttpClient;
-use App\Models\Coin;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
+use App\Services\ConversionService\AwesomeApi;
+
+
+
 
 class CoinController extends Controller
 {
+    private AwesomeApi $awesomeApi;
+
+    public function __construct(AwesomeApi $awesomeApi)
+    {
+        $this->awesomeApi = $awesomeApi;
+    }
+
     public function coin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'submitIn'=>'required|integer',
-            'submitFrom'=>'required|string|in:usd,eur,brl|different:submitTo',
-            'submitTo'=>'required|string|in:usd,eur,brl'
+            'submitIn' => 'required|integer',
+            'submitFrom' => 'required|string|in:usd,eur,brl|different:submitTo',
+            'submitTo' => 'required|string|in:usd,eur,brl'
         ]);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
-                'status'=>400,
-                'errors'=>$validator->messages()
+                'status' => 400,
+                'errors' => $validator->messages()
             ]);
         }
 
-        $in = $request->input('submitIn');
-        $from = $request->input('submitFrom');
-        $to = $request->input('submitTo');
-        
-        $httpClient = new HttpClient([ 'verify' => false ]);
-        $data = json_decode($httpClient->get("https://economia.awesomeapi.com.br/${from}-${to}")
-        ->getBody()->getContents());
-        $result = $data[0]->bid * $in;
+        $result = $this->awesomeApi->coinService(
+            ...array_values(
+                $request->only([
+                    'submitIn',
+                    'submitFrom',
+                    'submitTo',
 
-        $user = Auth::user();
-        $user->coin()->create([
-            'in'=>$in,
-            'from'=>$from,
-            'to'=>$to,
-            'result'=>$result,
+                ])
+            )
+        );
+        return response()->json([
+            'status' => 200,
+            'result' => $result['result'],
+
         ]);
-        return response()->json(["result"=> $result]);
-
     }
 
-    public function show(){
-        $user = Auth::user();
-        $historicCoin = $user->coin()->get();
+    public function show()
+    {
+
+        $historicCoin = $this->awesomeApi->showService();
 
         return response()->json([
-            'historicCoin'=>$historicCoin,
+            'historicCoin' => $historicCoin,
         ]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
 
         $validator = Validator::make($request->all(), [
-            'submitIn'=>'required|integer',
-            'submitFrom'=>'required|string|in:usd,eur,brl|different:submitTo',
-            'submitTo'=>'required|string|in:usd,eur,brl'
+            'submitIn' => 'required|integer',
+            'submitFrom' => 'required|string|in:usd,eur,brl|different:submitTo',
+            'submitTo' => 'required|string|in:usd,eur,brl'
         ]);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
-                'status'=>400,
-                'errors'=>$validator->messages()
+                'status' => 400,
+                'errors' => $validator->messages()
             ]);
         }
+        $result = $this->awesomeApi->updateService(
+            ...[$id, ...array_values(
+                $request->only([
+                    'submitIn',
+                    'submitFrom',
+                    'submitTo',
 
-        $in = $request->input('submitIn');
-        $from = $request->input('submitFrom');
-        $to = $request->input('submitTo');
-        
-        $httpClient = new HttpClient([ 'verify' => false ]);
-        $data = json_decode($httpClient->get("https://economia.awesomeapi.com.br/${from}-${to}")
-        ->getBody()->getContents());
-        $result = $data[0]->bid * $in;
 
-        $user = Auth::user();
-        $user->coin()->where('id', $id)->update([
-            'in'=>$in,
-            'from'=>$from,
-            'to'=>$to,
-            'result'=>$result,
-        ]);
-        return response()->json(["result"=> $result]);
-
-    }
-
-    public function destroy($id){
-        Coin::findOrFail($id)->delete();
+                ])
+            )]
+        );
         return response()->json([
-            "message"=>"Excluido com sucesso"
+            'status' => 200,
+            'result' => $result['result'],
+
         ]);
     }
 
+    public function destroy($id)
+    {
+        $this->awesomeApi->destroyService($id);
+        return response()->json([
+            'apagou' => "Foi excluido com sucesso"
+        ]);
+    }
 }

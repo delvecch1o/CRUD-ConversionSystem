@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Temperature extends Model
 {
     use HasFactory;
-    protected $table ='temperature';
+    protected $table = 'temperature';
     protected $fillable = [
         'in',
         'from',
         'to',
         'result',
     ];
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }
