@@ -21,22 +21,20 @@ function Login() {
             email: email,
             password: senha ,
         }
-       // console.log(data);
         axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.post('/api/login', data).then(res => {
-              if (res.data.status === 200) {
-      
+            axios.post('/api/login', data)
+            .then(res => {
                 localStorage.setItem('auth_token', res.data.token);
                 localStorage.setItem('auth_nome', res.data.username);
-                alert("Login com Sucesso")
+                alert("Login com Sucesso \n" + res.data.username)
                 history.push('/');
       
-              } else if(res.data.status === 401) {
-                alert("Credenciais Invalidas",res.data.message,"warning");
-                
-              } 
-              
+            })
+            .catch((error) => {
+                alert("ERRO \n" + error.response.data.message);
+
             });
+
           });
       
         }
