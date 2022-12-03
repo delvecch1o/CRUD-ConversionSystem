@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Services\ConversionService\TemperaturaApi;
+use App\Http\Requests\TemperatureRequest;
+use App\Models\Temperature;
 
 class TemperatureController extends Controller
 {
@@ -16,20 +16,9 @@ class TemperatureController extends Controller
         $this->temperaturaApi = $temperaturaApi;
     }
 
-    public function temperature(Request $request)
+    public function temperature(TemperatureRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'submitIn' => 'required|integer',
-            'submitFrom' => 'required|string|in:celsius,fahrenheit,kelvin|different:submitTo',
-            'submitTo' => 'required|string|in:celsius,fahrenheit,kelvin'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'errors' => $validator->messages(),
-            ]);
-        }
-
+       
         $result = $this->temperaturaApi->temperaturaService(
             ...array_values(
                 $request->only([
@@ -57,20 +46,9 @@ class TemperatureController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(TemperatureRequest $request, $id)
     {
-
-        $validator = Validator::make($request->all(), [
-            'submitIn' => 'required|integer',
-            'submitFrom' => 'required|string|in:celsius,fahrenheit,kelvin|different:submitTo',
-            'submitTo' => 'required|string|in:celsius,fahrenheit,kelvin'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'errors' => $validator->messages(),
-            ]);
-        }
+        
 
         $result = $this->temperaturaApi->updateService(
             ...[$id, ...array_values(
@@ -87,9 +65,9 @@ class TemperatureController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Temperature $temperature)
     {
-        $this->temperaturaApi->destroyService($id);
+        $this->temperaturaApi->destroyService($temperature);
         return response()->json([
             "message" => "Foi excluido com sucesso"
         ]);

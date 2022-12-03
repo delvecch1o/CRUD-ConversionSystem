@@ -57,7 +57,7 @@ class TemperaturaApi
 
     public function updateService($id, $in, $from, $to)
     {
-
+        
         if ($from == 'celsius') {
             if ($to == 'fahrenheit') {
                 $result = number_format(($in * 9) / 5 + 32, 2);
@@ -77,7 +77,7 @@ class TemperaturaApi
                 $result = number_format((($in - 273.15) * 9 / 5) + 32, 2);
             }
         }
-
+        
         $user = Auth::user();
         $user->temperature()->where('id', $id)->update([
             'in' => $in,
@@ -91,8 +91,8 @@ class TemperaturaApi
         ];
     }
 
-    public function destroyService($id)
+    public function destroyService(Temperature $temperature)
     {
-        Temperature::findOrFail($id)->delete();
+        $temperature->delete();
     }
 }

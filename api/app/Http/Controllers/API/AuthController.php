@@ -4,8 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+//use Illuminate\Support\Facades\Validator;
 use App\Services\UserAuthService;
+use App\Http\Requests\AuthRequest;
 
 
 class AuthController extends Controller
@@ -17,19 +18,9 @@ class AuthController extends Controller
         $this->userAuthService = $userAuthService;
     }
 
-    public function register(Request $request)
+    public function register(AuthRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:191',
-            'email' => 'required|email|max:191|unique:users,email',
-            'password' => 'required|min:8',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'validation_errors' => $validator->messages(),
-            ]);
-        } else {
-
+        
             $data = $this->userAuthService->registerUser(
                 ...array_values(
                     $request->only([
@@ -46,21 +37,12 @@ class AuthController extends Controller
                 'token' => $data['token'],
                 'message' => 'Usuario Cadastrado Com Sucesso!'
             ]);
-        }
+        
     }
 
-    public function login(Request $request)
+    public function login(AuthRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|max:191',
-            'password' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'validation_errors' => $validator->messages(),
-            ]);
-        }
-
+       
         $data = $this->userAuthService->loginUser(
             ...array_values(
                 $request->only([
