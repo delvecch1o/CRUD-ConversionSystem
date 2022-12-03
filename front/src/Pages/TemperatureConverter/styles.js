@@ -7,10 +7,11 @@ export const Container = styled.div`
     flex-direction: column;
     gap: 10px;
     height: 100vh;
-    background-color: white;
+    background-color: #cfeef7;
     min-width: 100vw;
 
 `
+
 
 export const Label = styled.label`
  
@@ -49,7 +50,8 @@ export const Select = styled.select`
     border:1px solid #333;
     border-radius: .3em;
     padding: .25rem;
-    width: 6.5em;
+    width: 10em;
+    background-color: #f0f2f5;
     
 `
 
@@ -72,6 +74,6 @@ export const Button = styled.button`
 `
 
 export const LabelResult = styled.label`
-  font-size: 14px;
-  color: red;
+  font-size: 20px;
+  color: #004eb6;
 `
