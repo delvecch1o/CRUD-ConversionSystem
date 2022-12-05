@@ -50,7 +50,7 @@ const Sidebar = ({ active }) => {
       
       <ItemSidebar Icon={FaHome} text="Home" onClick={() => navegar("/")} />
       <ItemSidebar Icon={FaTemperatureLow} text="Conversor de Temperaturas" onClick={() => navegar("/temperature")}/>
-      <ItemSidebar Icon={FaMoneyCheckAlt} text="Conversor de Moedas" />
+      <ItemSidebar Icon={FaMoneyCheckAlt} text="Conversor de Moedas" onClick={() => navegar("/coin")} />
       <ItemSidebar Icon={FaRegFileAlt} text="Relatorio de Conversões" />
       <ItemSidebar Icon={FaUserAlt} text="Users" />
       <ItemSidebar Icon={FaEnvelope} text="E-mail" />
