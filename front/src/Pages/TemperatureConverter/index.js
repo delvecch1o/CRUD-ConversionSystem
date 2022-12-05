@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "../../Components/Header";
 import { Container, Label, Form, Input, Button, Select, LabelResult } from './styles'
 import axios from "axios";
@@ -30,26 +30,23 @@ function Temperature() {
 
 
     const converterTemperatura = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const data = {
             submitIn: temperatureInput,
             submitFrom: fromTemperature,
             submitTo: toTemperature,
         }
 
-        axios.post('/api/temperature', data).then(res => {
-
+        axios.post('/api/temperature', data)
+        .then(res => {
             setResult(res.data.result)
-
             console.log(res.data)
-            if (res.data.status === 200) {
 
-            } else if (res.data.status === 400) {
-
-                setTemperatureInput({ ...temperatureInput, error_list: res.data.errors });
-
-            }
-
+        })
+        .catch((error) =>{
+            alert("As temperaturas não pode ser igauis");
+            console.log(error.response.data.message);
+            
         });
     }
 
