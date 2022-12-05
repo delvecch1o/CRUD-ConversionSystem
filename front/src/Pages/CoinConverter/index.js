@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from '../../Components/Header/index'
 import { Container, Label, Form, Input, Button, Select, LabelResult } from './styles'
 import axios from "axios";
@@ -37,7 +37,7 @@ function Coin() {
         axios.post('/api/coin', data)
         .then(res => {
             setResult(res.data.result)
-            
+
         })
         .catch((error) =>{
             alert("Erro, insira moedas válidas")
