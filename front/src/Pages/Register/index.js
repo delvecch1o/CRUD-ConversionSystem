@@ -11,7 +11,7 @@ function Register() {
     const [senha, setSenha] = useState();
     const [senhaConfirme, setSenhaConfirme] = useState();
     const [error, setError] = useState();
-
+    
     const submitRegister = (e) => {
         e.preventDefault();
         if (!nome |!email | !senha | !senhaConfirme ) {
@@ -19,6 +19,9 @@ function Register() {
             return;
         } else if (senha !== senhaConfirme) {
             setError("As senhas não são iguais");
+            return;
+        } else if(senha.length < 8){
+            setError("Senha muito curta, minimo 8 caracteres");
             return;
         }
         
@@ -28,20 +31,21 @@ function Register() {
             password: senha,
             password_confirmation: senhaConfirme
         }
-        // console.log(data);
-        axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.post('/api/register', data).then(res => {
-                if (res.data.status === 200) {
 
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post('/api/register', data)
+            .then(res => {
                     localStorage.setItem('auth_token', res.data.token);
                     localStorage.setItem('auth_nome', res.data.username);
                     alert("Usuario Cadastrado Com Sucesso!")
                     history.push('/');
 
-                } else {
-                    setError({ ...error, error_list: res.data.validation_errors });
-                }
-
+                
+            })
+            .catch((error) => {
+                console.log(error.response.data.errors.email);
+                alert("ERRO \n" + "Email ja cadastrado, por favor insira outro e-mail !");
+             
             });
         });
 
@@ -67,7 +71,7 @@ function Register() {
 
                 <Input
                     type='password'
-                    placeholder='Digite sua senha,minimo 8'
+                    placeholder='Digite sua senha, minimo 8 '
                     value={senha}
                     onChange={(e) => [setSenha(e.target.value), setError("")]}
                 />
