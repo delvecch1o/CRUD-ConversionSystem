@@ -14,7 +14,7 @@ function Report() {
             .then(response => {
                 setReportCoins(response.data.historicCoin.historicCoin);
                 console.log(response.data.historicCoin.historicCoin);
-
+                
             });
 
     }
@@ -69,20 +69,17 @@ function Report() {
 
     }
 
-
-
-
     return (
         <>
             <Header />
             <Container>
                 <Label>
-                    Lista De converções De Moedas
+                    Converções De Moedas
                 </Label>
                 <Table>
                     <Thead>
                         <Tr>
-                            <Th>ID</Th>
+                            <Th>User Id</Th>
                             <Th>Valor R$</Th>
                             <Th>De</Th>
                             <Th>Para</Th>
@@ -112,12 +109,12 @@ function Report() {
 
             <Container>
                 <Label>
-                    Lista De converções Temperaturas
+                    Converções de Temperaturas
                 </Label>
                 <Table>
                     <Thead>
                         <Tr>
-                            <Th>ID</Th>
+                            <Th>User Id</Th>
                             <Th>Valor R$</Th>
                             <Th>De</Th>
                             <Th>Para</Th>
