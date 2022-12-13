@@ -2,7 +2,7 @@ FROM node:18
 
 WORKDIR /front
 
-COPY * .
+COPY /front/. .
 
 RUN npm ci
 
